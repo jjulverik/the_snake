@@ -46,18 +46,18 @@ clock = pygame.time.Clock()
 
 class GameObject:
     """Базовый класс для игровых объектов."""
-    
+
     def __init__(self, position=None, body_color=None):
         """
         Инициализирует игровой объект.
-        
+
         Args:
             position: Начальная позиция объекта
             body_color: Цвет объекта
         """
         self.position = position if position else (0, 0)
         self.body_color = body_color if body_color else WHITE
-    
+
     def draw(self):
         """Отрисовывает объект на экране."""
         pass
@@ -65,18 +65,19 @@ class GameObject:
 
 class Apple(GameObject):
     """Класс для яблока в игре."""
-    
+
     def __init__(self):
         """Инициализирует яблоко с красным цветом и случайной позицией."""
         super().__init__(body_color=RED)
         self.randomize_position([])
-    
+
     def randomize_position(self, snake_positions):
         """
         Устанавливает новую случайную позицию для яблока.
-        
+
         Args:
-            snake_positions: Список позиций змейки, чтобы яблоко не появилось на ней
+            snake_positions: Список позиций змейки,
+            чтобы яблоко не появилось на ней
         """
         while True:
             x = random.randint(0, GRID_WIDTH - 1)
@@ -84,7 +85,7 @@ class Apple(GameObject):
             if (x, y) not in snake_positions:
                 self.position = (x, y)
                 break
-    
+
     def draw(self):
         """Отрисовывает яблоко на экране."""
         x = self.position[0] * GRID_SIZE
@@ -96,12 +97,12 @@ class Apple(GameObject):
 
 class Snake(GameObject):
     """Класс для змейки в игре."""
-    
+
     def __init__(self):
         """Инициализирует змейку в начальном состоянии."""
         super().__init__(body_color=GREEN)
         self.reset()
-    
+
     def reset(self):
         """Сбрасывает змейку в начальное состояние."""
         x = GRID_WIDTH // 2
@@ -111,19 +112,19 @@ class Snake(GameObject):
         self.next_direction = None
         self.score = 0
         self.grow = 0
-    
+
     def get_head_position(self):
         """Возвращает позицию головы змейки."""
         return self.positions[0]
-    
+
     def update_direction(self, new_direction):
         """Обновляет направление движения змейки."""
         self.next_direction = new_direction
-    
+
     def move(self):
         """
         Двигает змейку в текущем направлении.
-        
+
         Returns:
             bool: True если движение успешно, False при столкновении с собой
         """
@@ -132,23 +133,23 @@ class Snake(GameObject):
             if (self.direction[0] * -1, self.direction[1] * -1) != (dx, dy):
                 self.direction = self.next_direction
             self.next_direction = None
-        
+
         x, y = self.get_head_position()
         dx, dy = self.direction
         new_position = ((x + dx) % GRID_WIDTH, (y + dy) % GRID_HEIGHT)
-        
+
         if new_position in self.positions:
             return False
-        
+
         self.positions.insert(0, new_position)
-        
+
         if self.grow > 0:
             self.grow -= 1
         else:
             self.positions.pop()
-        
+
         return True
-    
+
     def draw(self):
         """Отрисовывает змейку на экране."""
         for i, (x, y) in enumerate(self.positions):
@@ -173,7 +174,7 @@ def draw_grid():
 def draw_score(score):
     """
     Отображает текущий счёт.
-    
+
     Args:
         score: Количество очков
     """
@@ -185,7 +186,7 @@ def draw_score(score):
 def game_over_screen(score):
     """
     Отображает экран окончания игры.
-    
+
     Args:
         score: Финальный счёт
     """
@@ -195,14 +196,14 @@ def game_over_screen(score):
         text,
         (SCREEN_WIDTH // 2 - 120, SCREEN_HEIGHT // 2 - 40)
     )
-    
+
     font_small = pygame.font.Font(None, 30)
     score_text = font_small.render(f'Score: {score}', True, WHITE)
     screen.blit(
         score_text,
         (SCREEN_WIDTH // 2 - 70, SCREEN_HEIGHT // 2 + 10)
     )
-    
+
     restart_text = font_small.render('Press R to restart', True, GREEN)
     screen.blit(
         restart_text,
@@ -213,11 +214,11 @@ def game_over_screen(score):
 def handle_keys(snake, game_over):
     """
     Обрабатывает нажатия клавиш.
-    
+
     Args:
         snake: Объект змейки
         game_over: Флаг окончания игры
-    
+
     Returns:
         bool: True если требуется рестарт
     """
@@ -225,7 +226,7 @@ def handle_keys(snake, game_over):
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        
+
         if event.type == pygame.KEYDOWN:
             if game_over and event.key == pygame.K_r:
                 return True
@@ -244,38 +245,38 @@ def handle_keys(snake, game_over):
 def update_game_state(snake, apple, game_over):
     """
     Обновляет состояние игры.
-    
+
     Args:
         snake: Объект змейки
         apple: Объект яблока
         game_over: Флаг окончания игры
-    
+
     Returns:
         bool: Обновлённый флаг game_over
     """
     if not game_over:
         if not snake.move():
             return True
-        
+
         if snake.get_head_position() == apple.position:
             snake.grow += 1
             snake.score += 10
             apple.randomize_position(snake.positions)
-    
+
     return game_over
 
 
 def draw_game_state(snake, apple, game_over):
     """
     Отрисовывает текущее состояние игры.
-    
+
     Args:
         snake: Объект змейки
         apple: Объект яблока
         game_over: Флаг окончания игры
     """
     screen.fill(BOARD_BACKGROUND_COLOR)
-    
+
     if not game_over:
         draw_grid()
         snake.draw()
@@ -286,7 +287,7 @@ def draw_game_state(snake, apple, game_over):
         apple.draw()
         draw_score(snake.score)
         game_over_screen(snake.score)
-    
+
     pygame.display.flip()
 
 
@@ -295,15 +296,15 @@ def main():
     snake = Snake()
     apple = Apple()
     apple.randomize_position(snake.positions)
-    
+
     game_over = False
-    
+
     while True:
         if handle_keys(snake, game_over):
             snake.reset()
             apple.randomize_position(snake.positions)
             game_over = False
-        
+
         game_over = update_game_state(snake, apple, game_over)
         draw_game_state(snake, apple, game_over)
         clock.tick(FPS)
