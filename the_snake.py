@@ -7,6 +7,7 @@
 
 import random
 import sys
+
 import pygame
 
 # Инициализация PyGame
@@ -293,3 +294,4 @@ def start_game():
 
 if __name__ == '__main__':
     start_game()
+    
