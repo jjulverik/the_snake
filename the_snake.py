@@ -7,9 +7,7 @@
 
 import random
 import sys
-
 import pygame
-
 
 # Инициализация PyGame
 pygame.init()
