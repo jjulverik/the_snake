@@ -3,7 +3,7 @@
 Управление: стрелки ← ↑ ↓ →
 Рестарт после проигрыша: R
 Выход: ESC или крестик окна
-"""  # noqa: E800
+"""
 
 import random
 import sys
@@ -19,7 +19,6 @@ SCREEN_HEIGHT = 480
 GRID_SIZE = 20
 FPS = 15
 
-# Цвета (RGB)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
