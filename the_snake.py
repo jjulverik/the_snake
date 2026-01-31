@@ -1,24 +1,25 @@
 """
 Классическая игра 'Змейка'.
-
-Управление:
-- Стрелки ← ↑ ↓ →
-- R — рестарт после проигрыша
-- ESC или крестик окна — выход
+Управление: стрелки ← ↑ ↓ →
+Рестарт после проигрыша: R
+Выход: ESC или крестик окна
 """
 
 import random
 import sys
+
 import pygame
 
-
+# Инициализация PyGame
 pygame.init()
 
+# Константы игры
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 GRID_SIZE = 20
 FPS = 15
 
+# Цвета (RGB)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -27,14 +28,17 @@ DARK_GREEN = (0, 180, 0)
 GRAY = (40, 40, 40)
 BOARD_BACKGROUND_COLOR = BLACK
 
+# Направления движения
 UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
 RIGHT = (1, 0)
 
+# Размеры сетки
 GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
 GRID_HEIGHT = SCREEN_HEIGHT // GRID_SIZE
 
+# Создание окна
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Snake')
 clock = pygame.time.Clock()
